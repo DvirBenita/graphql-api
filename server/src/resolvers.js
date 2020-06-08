@@ -1,44 +1,14 @@
 const GraphQLTimestamp = require('./GraphQLTimestamp')
 
-let readingsList = {
-    1591643927103: {
-        timestamp: new Date(1591643927103),
-        date: new Date(1591643927103).toUTCString(),
-        reading: 25
-    },
-    1591644336681: {
-        timestamp: new Date(1591644336681),
-        date: new Date(1591644336681).toUTCString(),
-        reading: -100
-    }
-}
-
-let peopleList = {
-    'martin.albert@gmail.com': {
-        email: 'martin.albert@gmail.com',
-        firstName: 'Martin',
-        lastName: 'Albert',
-        department: 'IT',
-        age: 21
-    },
-    'peter.albert@gmail.com': {
-        email: 'peter.albert@gmail.com',
-        firstName: 'Peter',
-        lastName: 'Albert',
-        department: 'Civil Engineering',
-        age: 25
-    },
-}
-
 const resolvers = {
     Timestamp: GraphQLTimestamp,
     Query: {
-        reading: (parent, { timestamp }) => {
+        reading: (parent, { timestamp }, { models }) => {
             let currentT = Date.now()
             let currentD = new Date(currentT).toUTCString()
 
             if (timestamp !== undefined)
-                return readingsList[Number(timestamp)]
+                return models.readingsList[Number(timestamp)]
             else 
                 return {
                     timestamp: currentT,
@@ -47,13 +17,13 @@ const resolvers = {
                 }
         },
 
-        readings: () => Object.values(readingsList),
+        readings: (parent, args, { models }) => Object.values(models.readingsList),
 
-        me: (parent, args, { email }) => peopleList[email],
+        me: (parent, args, { models, email }) => models.peopleList[email],
 
-        person: (parent, { email }) => {
+        person: (parent, { email }, { models }) => {
             if (email !== undefined)
-                return peopleList[email]
+                return models.peopleList[email]
             else 
                 return {
                     email: 'Not Provided',
@@ -63,28 +33,28 @@ const resolvers = {
                 }
         },
 
-        people: () => Object.values(peopleList)
+        people: (parent, args, { models }) => Object.values(models.peopleList)
     },
     Mutation: {
-        createReading: (parent, {timestamp, reading}) => {
+        createReading: (parent, { timestamp, reading }, { models }) => {
             timestamp = Number(timestamp)
             const newReading = {
                 timestamp: new Date(timestamp),
                 date: new Date(timestamp).toUTCString(),
                 reading: reading
             }
-            readingsList[timestamp] = newReading
+            models.readingsList[timestamp] = newReading
             return newReading
         },
-        deleteReading: (parent, { timestamp }) => {
+        deleteReading: (parent, { timestamp }, { models }) => {
             timestamp = Number(timestamp)
 
-            const { [timestamp]: reading, ...otherReadings } = readingsList
+            const { [timestamp]: reading, ...otherReadings } = models.readingsList
             
             if (!reading)
                 return false
             
-            readingsList = otherReadings
+            models.readingsList = otherReadings
             return true
         }
     }
