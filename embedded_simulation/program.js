@@ -10,9 +10,9 @@ function getReading() {
     )
 }
 
-const server_url = '127.0.0.1'
+const serverUrl = '127.0.0.1'
 const options = {
-    hostname: server_url,
+    hostname: serverUrl,
     port: 3000,
     path: '/readings',
     method: 'POST',
