@@ -3,10 +3,18 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const { graphqlExpress } = require('apollo-server-express');
+const { makeExecutableSchema } = require('graphql-tools')
+const typeDefs = require('./schema')
+const resolvers = require('./resolvers')
+
+const schema = makeExecutableSchema({
+	typeDefs,
+	resolvers,
+})
 
 // middlewares
 app.use(morgan('dev'));
-// app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json())
 
 // Access Control Allow Origin
@@ -21,8 +29,14 @@ app.use((req, res, next) => {
 	}
 	next();
 })
+
+// Server homepage http://127.0.0.1/
 app.get('/', function(req, res) {
 	res.status(200).send('Hello World!');
 });  
 
+// Server GraphQL
+app.use('/graphql', graphqlExpress({ schema: myGraphQLSchema }));
+
 module.exports = app;
+module.exports.schema = schema
