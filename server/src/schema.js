@@ -9,10 +9,11 @@ const Query = gql`
         reading(timestamp: String): Reading
         readings: [Reading!]
 
-        me: Person
-
         people: [Person!]
         person(email: String): Person
+
+        scans(email: String, status: String): [Scan!]
+        scan(timestamp: String): Scan
     }
 
     type Reading {
@@ -27,6 +28,13 @@ const Query = gql`
         lastName: String!
         department: String!
         age: Int
+    }
+
+    type Scan {
+        timestamp: Timestamp!
+        date: String
+        email: String!
+        status: String
     }
 `
 

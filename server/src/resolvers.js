@@ -19,8 +19,6 @@ const resolvers = {
 
         readings: (parent, args, { models }) => Object.values(models.readingsList),
 
-        me: (parent, args, { models, email }) => models.peopleList[email],
-
         person: (parent, { email }, { models }) => {
             if (email !== undefined)
                 return models.peopleList[email]
