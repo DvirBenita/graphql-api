@@ -1,0 +1,18 @@
+{
+  "name": "embedded_simulation",
+  "version": "1.0.0",
+  "description": "HTTP POST Requests simulation of Hall Effect sensor",
+  "main": "program.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node program.js"
+  },
+  "keywords": [
+    "http",
+    "requests",
+    "embedded",
+    "systems"
+  ],
+  "author": "Martin Albert",
+  "license": "ISC"
+}
