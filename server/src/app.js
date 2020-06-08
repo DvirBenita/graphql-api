@@ -1,21 +1,30 @@
 // package routes
 const express = require('express')
-const app = express()
 const morgan = require('morgan')
-const bodyParser = require('body-parser')
-const { graphqlExpress } = require('apollo-server-express')
-const { makeExecutableSchema } = require('graphql-tools')
+const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 
-const schema = makeExecutableSchema({
-	typeDefs,
+// making express server
+const app = express()
+
+// making apollo server
+const server = new ApolloServer({
+    typeDefs,
 	resolvers,
+	context: {
+		email: 'martin.albert@gmail.com'
+	},
+    playground: {
+        endpoint: '/graphql',
+        settings: {
+            'editor.theme': 'dark'
+        }
+    }
 })
 
 // middlewares
 app.use(morgan('dev'))
-app.use(bodyParser.json())
 
 // Access Control Allow Origin
 // Basic Headers
@@ -31,12 +40,13 @@ app.use((req, res, next) => {
 })
 
 // Server homepage http://127.0.0.1/
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
 	res.status(200).send('Hello World!')
 })  
 
-// Server GraphQL
-app.use('/graphql', graphqlExpress({ schema: myGraphQLSchema }))
+server.applyMiddleware({
+	app, 
+	path: '/graphql'
+})
 
 module.exports = app
-module.exports.schema = schema
