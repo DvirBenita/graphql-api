@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
+const models = require('./models')
 
 // making express server
 const app = express()
@@ -13,6 +14,7 @@ const server = new ApolloServer({
     typeDefs,
 	resolvers,
 	context: {
+		models,
 		email: 'martin.albert@gmail.com'
 	},
     playground: {
