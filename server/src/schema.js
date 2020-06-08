@@ -33,6 +33,7 @@ const Query = gql`
 const Mutation = `
     type Mutation {
         createReading(timestamp: String!, reading: Int!): Reading!
+        deleteReading(timestamp: String!): Boolean!
     }
 `
 

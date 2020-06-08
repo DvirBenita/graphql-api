@@ -66,7 +66,7 @@ const resolvers = {
         people: () => Object.values(peopleList)
     },
     Mutation: {
-        createReading: (parent, {timestamp, reading}, { email }) => {
+        createReading: (parent, {timestamp, reading}) => {
             timestamp = Number(timestamp)
             const newReading = {
                 timestamp: new Date(timestamp),
@@ -75,6 +75,17 @@ const resolvers = {
             }
             readingsList[timestamp] = newReading
             return newReading
+        },
+        deleteReading: (parent, { timestamp }) => {
+            timestamp = Number(timestamp)
+
+            const { [timestamp]: reading, ...otherReadings } = readingsList
+            
+            if (!reading)
+                return false
+            
+            readingsList = otherReadings
+            return true
         }
     }
 }
