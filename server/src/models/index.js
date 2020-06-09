@@ -2,6 +2,7 @@ const daoLoader = require('./daoLoader');
 
 const personImpl = daoLoader.loadDao('person')
 const readingImpl = daoLoader.loadDao('reading')
+const scanImpl = daoLoader.loadDao('scan')
 
 module.exports = {
     /**
@@ -51,4 +52,25 @@ module.exports = {
      * Deletes the Reading object represented by given email.
      */
     deleteReading: async timestamp => readingImpl.deleteReading(timestamp),
+
+    
+    /**
+     * Gets the Scan object for a given timestamp.
+     */
+    getScan: async timestamp => scanImpl.getScan(timestamp),
+
+    /**
+     * Gets all Scan objects grouped by given arguments.
+     */
+    getScans: async (email, status) => scanImpl.getScans(email, status),
+
+    /**
+     * Creates new Scan object with given arguments.
+     */
+    createScan: async (timestamp, email, status) => scanImpl.createScan(timestamp, email, status),
+
+    /**
+     * Deletes the Scan object represented by given timetamp.
+     */
+    deleteScan: async timestamp => scanImpl.deleteScan(timestamp)
 }
