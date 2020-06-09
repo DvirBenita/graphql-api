@@ -1,7 +1,6 @@
 const redis = require('./redisClient');
+const keyGenerator = require('./redisKeyGenerator');
 const _ = require('lodash')
-
-const peopleSetKey = 'People:Set'
 
 /**
  * Gets the Person object for a given email.
@@ -18,7 +17,7 @@ const getPerson = async email => {
         }
 
     const client = redis.getClient()
-    const personKey = `${email}:Person`
+    const personKey = keyGenerator.getPersonHashKey(email)
 
     // get a hash represented by a person key (email)
     return await client.hgetallAsync(personKey)
@@ -32,7 +31,7 @@ const getAllPeople = async () => {
     const people = []
 
     // get a set of all person keys 
-    const personKeys = await client.smembersAsync(peopleSetKey)
+    const personKeys = await client.smembersAsync(keyGenerator.getPeopleSetKey())
 
     for (const key of personKeys) {
 
@@ -51,7 +50,7 @@ const getAllPeople = async () => {
 const createPerson = async (email, firstName, lastName, department, age) => {
 
     const client = redis.getClient()
-    const personKey = `${email}:Person`
+    const personKey = keyGenerator.getPersonHashKey(email)
 
     // check duplicates
     if (await client.hgetAsync(personKey, 'email') !== null)
@@ -72,7 +71,7 @@ const createPerson = async (email, firstName, lastName, department, age) => {
     }
 
     // add a person key (email) to the set of people
-    await client.saddAsync(peopleSetKey, personKey)
+    await client.saddAsync(keyGenerator.getPeopleSetKey(), personKey)
 
     // create a hash represented by person key (email)
     await client.hmsetAsync(personKey, newPerson)
@@ -85,7 +84,7 @@ const createPerson = async (email, firstName, lastName, department, age) => {
 const updatePerson = async (email, firstName, lastName, department, age) => {
 
     const client = redis.getClient()
-    const personKey = `${email}:Person`
+    const personKey = keyGenerator.getPersonHashKey(email)
 
     const newAttrs = {
         email: email,
@@ -117,15 +116,36 @@ const updatePerson = async (email, firstName, lastName, department, age) => {
  */
 const deletePerson = async email => {
     const client = redis.getClient()
-    const personKey = `${email}:Person`
+    const personKey = keyGenerator.getPersonHashKey(email)
 
     // remove person key (email) from the set of people
-    await client.sremAsync(peopleSetKey, personKey)
+    await client.sremAsync(keyGenerator.getPeopleSetKey(), personKey)
 
     // remove a hash represented by person key (email)
     const result = await client.delAsync(personKey)
     
     return result ? true : false    
+}
+/**
+ * Deletes all Person objects.
+ */
+const deleteAllPeople = async () => {
+    const client = redis.getClient()
+    
+    // get a set of all reading keys 
+    const personKeys = await client.smembersAsync(keyGenerator.getPeopleSetKey())
+
+    for (const key of personKeys) {
+
+        // remove hashes represented by keys in set
+        await client.delAsync(key)
+
+    }
+
+    // delete whole set of people
+    await client.delAsync(keyGenerator.getPeopleSetKey())
+
+    return true
 }
 
 module.exports = {
@@ -134,4 +154,5 @@ module.exports = {
     createPerson,
     updatePerson,
     deletePerson,
+    deleteAllPeople,
 }

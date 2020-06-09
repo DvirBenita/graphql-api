@@ -1,7 +1,6 @@
 const redis = require('./redisClient');
+const keyGenerator = require('./redisKeyGenerator');
 const _ = require('lodash')
-
-const scansSetKey = 'Scans:Set'
 
 /**
  * Returns timestamp and UTC String of actual Time
@@ -29,7 +28,7 @@ const getScan = async timestamp => {
     
     timestamp = Number(timestamp)
     const client = redis.getClient()
-    const scanKey = `${timestamp}:Scan`
+    const scanKey = keyGenerator.getScanHashKey(timestamp)
 
     // get a hash represented by a scan key (timestamp)
     return await client.hgetallAsync(scanKey)
@@ -43,7 +42,7 @@ const getScans = async (email, status) => {
     const scans = []
 
     // get a set of all scan keys 
-    const scanKeys = await client.smembersAsync(scansSetKey)
+    const scanKeys = await client.smembersAsync(keyGenerator.getScansSetKey())
 
     for (const key of scanKeys) {
 
@@ -71,7 +70,8 @@ const createScan = async (timestamp, email, status) => {
     timestamp = Number(timestamp)
     const { currentT, currentD } = getCurrentTime()
     const client = redis.getClient()
-    const scanKey = `${timestamp}:Scan`
+    const scanKey = keyGenerator.getScanHashKey(timestamp)
+    keyGenerator.getScanHashKey(timestamp)
 
     // check duplicates
     if (await client.hgetAsync(scanKey, 'email') !== null)
@@ -90,7 +90,7 @@ const createScan = async (timestamp, email, status) => {
     }
 
     // add scan key (timestamp) to the set of scans
-    await client.saddAsync(scansSetKey, scanKey)
+    await client.saddAsync(keyGenerator.getScansSetKey(), scanKey)
     
     // create a hash represented by scan key (timestamp)
     await client.hmsetAsync(scanKey, newScan)
@@ -103,20 +103,44 @@ const createScan = async (timestamp, email, status) => {
 const deleteScan = async timestamp => {
 
     const client = redis.getClient()
-    const scanKey = `${timestamp}:Scan`
+    const scanKey = keyGenerator.getScanHashKey(timestamp)
+    keyGenerator.getScanHashKey(timestamp)
 
     // remove scan key (timestamp) from the set of scans
-    await client.sremAsync(scansSetKey, scanKey)
+    await client.sremAsync(keyGenerator.getScansSetKey(), scanKey)
 
     // remove a hash represented by scan key (timestamp)
     const result = await client.delAsync(scanKey)
 
     return result ? true : false    
 }
+/**
+ * Deletes all Scan objects.
+ */
+const deleteAllScans = async timestamp => {
+
+    const client = redis.getClient()
+
+    // get a set of all scan keys 
+    const scanKeys = await client.smembersAsync(keyGenerator.getScansSetKey())
+
+    for (const key of scanKeys) {
+
+        // delete hashes represented by key in set
+        await client.delAsync(key)
+
+    } 
+
+    // delete whole set of people
+    await client.delAsync(scanKeys)
+
+    return true
+}
 
 module.exports = {
     getScan,
     getScans,
     createScan,
-    deleteScan
+    deleteScan,
+    deleteAllScans,
 }
