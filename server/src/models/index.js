@@ -32,6 +32,11 @@ module.exports = {
      */
     deletePerson: async email => personImpl.deletePerson(email),
 
+    /**
+     * Deletes the Person object represented by given email.
+     */
+    deleteAllPeople: async () => personImpl.deleteAllPeople(),
+
 
     /**
      * Gets the Reading object for a given timestamp.
@@ -53,7 +58,11 @@ module.exports = {
      */
     deleteReading: async timestamp => readingImpl.deleteReading(timestamp),
 
-    
+    /**
+     * Deletes all Reading objects
+     */
+    deleteAllReadings: async () => readingImpl.deleteAllReadings(),
+
     /**
      * Gets the Scan object for a given timestamp.
      */
@@ -72,5 +81,10 @@ module.exports = {
     /**
      * Deletes the Scan object represented by given timetamp.
      */
-    deleteScan: async timestamp => scanImpl.deleteScan(timestamp)
+    deleteScan: async timestamp => scanImpl.deleteScan(timestamp),
+
+    /**
+     * Deletes all Scan objects
+     */
+    deleteAllScans: async () => scanImpl.deleteAllScans(),
 }

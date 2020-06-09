@@ -21,15 +21,21 @@ const resolvers = {
         
         deleteReading: (parent, { timestamp }, { models }) => models.deleteReading(timestamp),
 
+        deleteAllReadings: (parent, args, { models }) => models.deleteAllReadings(),
+        
         createPerson: (parent, { email, firstName, lastName, department, age }, { models }) => models.createPerson(email, firstName, lastName, department, age),
+
+        updatePerson: (parent, { email, firstName, lastName, department, age }, { models }) => models.updatePerson(email, firstName, lastName, department, age),
         
         deletePerson: (parent, { email }, { models }) => models.deletePerson(email),
 
-        updatePerson: (parent, { email, firstName, lastName, department, age }, { models }) => models.updatePerson(email, firstName, lastName, department, age),
+        deleteAllPeople: (parent, args, { models }) => models.deleteAllPeople(),
 
         createScan: (parent, { timestamp, email, status }, { models }) => models.createScan(timestamp, email, status),
 
         deleteScan: (parent, { timestamp }, { models }) => models.deleteScan(timestamp),
+
+        deleteAllScans: (parent, args, { models }) => models.deleteAllScans(),
     }
 }
 

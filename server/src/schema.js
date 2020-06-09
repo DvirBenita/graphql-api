@@ -41,13 +41,16 @@ const Mutation = `
     type Mutation {
         createReading(timestamp: String!, reading: Int!): Reading!
         deleteReading(timestamp: String!): Boolean!
+        deleteAllReadings: Boolean!
         
         createPerson(email: String!, firstName: String!, lastName: String!, department: String!, age: Int): Person!
-        deletePerson(email: String!): Boolean!
         updatePerson(email: String!, firstName: String, lastName: String, department: String, age: Int): Boolean!
+        deletePerson(email: String!): Boolean!
+        deleteAllPeople: Boolean!
 
         createScan(timestamp: String!, email: String!, status: String): Scan!
         deleteScan(timestamp: String!): Boolean!
+        deleteAllScans: Boolean!
     }
 `
 
