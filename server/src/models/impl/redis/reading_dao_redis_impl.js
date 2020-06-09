@@ -1,5 +1,5 @@
-const redis = require('./redisClient');
-const keyGenerator = require('./redisKeyGenerator');
+const redis = require('./redisClient')
+const keyGenerator = require('./redisKeyGenerator')
 const _ = require('lodash')
 
 /**
@@ -22,7 +22,7 @@ const getReading = async timestamp => {
         return {
             timestamp: currentT,
             date: currentD,
-            reading: 0,
+            value: 0,
         }
 
     timestamp = Number(timestamp)
@@ -58,9 +58,9 @@ const getAllReadings = async () => {
 /**
  * Creates new Reading object with given arguments.
  */
-const createReading = async (timestamp, reading) => {
+const createReading = async reading => {
     
-    timestamp = Number(timestamp)
+    const timestamp = Number(reading.timestamp)
     const { currentT, currentD } = getCurrentTime()
     const client = redis.getClient()
     const readingKey = keyGenerator.getReadingHashKey(timestamp)
@@ -76,7 +76,7 @@ const createReading = async (timestamp, reading) => {
     const newReading = {
         timestamp: new Date(timestamp),
         date: new Date(timestamp).toUTCString(),
-        reading: reading
+        reading: reading.value
     }
     
     // add a reading key (timestamp) to the set of readings

@@ -18,7 +18,7 @@ const Query = gql`
     type Reading {
         timestamp: Timestamp!
         date: String
-        reading: Int!
+        value: Int!
     }
 
     type Person {
@@ -39,7 +39,7 @@ const Query = gql`
 
 const Mutation = `
     type Mutation {
-        createReading(timestamp: String!, reading: Int!): Reading!
+        createReading(timestamp: String!, value: Int!): Reading!
         deleteReading(timestamp: String!): Boolean!
         deleteAllReadings: Boolean!
         

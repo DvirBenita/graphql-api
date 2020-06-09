@@ -1,5 +1,5 @@
-const redis = require('./redisClient');
-const keyGenerator = require('./redisKeyGenerator');
+const redis = require('./redisClient')
+const keyGenerator = require('./redisKeyGenerator')
 const _ = require('lodash')
 
 /**
@@ -36,7 +36,7 @@ const getScan = async timestamp => {
 /**
  * Gets all Scan objects grouped by given arguments.
  */
-const getScans = async (email, status) => {
+const getScans = async filter => {
 
     const client = redis.getClient()
     const scans = []
@@ -53,25 +53,24 @@ const getScans = async (email, status) => {
             scans.push(scan)
     }
  
-    if (!email && !status)
+    if (!filter.email && !filter.status)
         return scans
-    else if (!status)
-        return _.filter(scans, {email: email})
-    else if (!email)
-        return _.filter(scans, {status: status})
+    else if (!filter.status)
+        return _.filter(scans, {email: filter.email})
+    else if (!filter.email)
+        return _.filter(scans, {status: filter.status})
     else 
-        return _.filter(scans, {email: email, status: status})
+        return _.filter(scans, {email: filter.email, status: filter.status})
 }   
 /**
  * Creates new Scan object with given arguments.
  */
-const createScan = async (timestamp, email, status) => {
+const createScan = async scan => {
 
-    timestamp = Number(timestamp)
+    const timestamp = Number(scan.timestamp)
     const { currentT, currentD } = getCurrentTime()
     const client = redis.getClient()
     const scanKey = keyGenerator.getScanHashKey(timestamp)
-    keyGenerator.getScanHashKey(timestamp)
 
     // check duplicates
     if (await client.hgetAsync(scanKey, 'email') !== null)
@@ -85,8 +84,8 @@ const createScan = async (timestamp, email, status) => {
     const newScan = {
         timestamp: new Date(timestamp),
         date: new Date(timestamp).toUTCString(),
-        email: email,
-        status: status || 'not verified',
+        email: scan.email,
+        status: scan.status || 'not verified',
     }
 
     // add scan key (timestamp) to the set of scans

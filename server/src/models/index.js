@@ -18,14 +18,14 @@ module.exports = {
     /**
      * Creates new Person object with given attributes.
      */
-    createPerson: async (email, firstName, lastName, department, age) => 
-        personImpl.createPerson(email, firstName, lastName, department, age),
+    createPerson: async person => 
+        personImpl.createPerson(person),
 
     /**
      * Updates the Person object with new attributes.
      */
-    updatePerson: async (email, firstName, lastName, department, age) =>
-        personImpl.updatePerson(email, firstName, lastName, department, age),
+    updatePerson: async person =>
+        personImpl.updatePerson(person),
 
     /**
      * Deletes the Person object represented by given email.
@@ -51,7 +51,7 @@ module.exports = {
     /**
      * Creates new Reading object with given attributes.
      */
-    createReading: async (timestamp, reading) => readingImpl.createReading(timestamp, reading),
+    createReading: async reading => readingImpl.createReading(reading),
 
     /**
      * Deletes the Reading object represented by given email.
@@ -71,12 +71,12 @@ module.exports = {
     /**
      * Gets all Scan objects grouped by given arguments.
      */
-    getScans: async (email, status) => scanImpl.getScans(email, status),
+    getScans: async filter => scanImpl.getScans(filter),
 
     /**
      * Creates new Scan object with given arguments.
      */
-    createScan: async (timestamp, email, status) => scanImpl.createScan(timestamp, email, status),
+    createScan: async scan => scanImpl.createScan(scan),
 
     /**
      * Deletes the Scan object represented by given timetamp.

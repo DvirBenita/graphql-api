@@ -1,5 +1,5 @@
-const redis = require('./redisClient');
-const keyGenerator = require('./redisKeyGenerator');
+const redis = require('./redisClient')
+const keyGenerator = require('./redisKeyGenerator')
 const _ = require('lodash')
 
 /**
@@ -20,7 +20,11 @@ const getPerson = async email => {
     const personKey = keyGenerator.getPersonHashKey(email)
 
     // get a hash represented by a person key (email)
-    return await client.hgetallAsync(personKey)
+    const person = await client.hgetallAsync(personKey)
+    if(person)
+        person.age = Number(person.age)
+
+    return person
 }
 /**
  * Gets all Person objects.
@@ -38,8 +42,10 @@ const getAllPeople = async () => {
         // get a hash represented by key (email) in the set
         const person = await client.hgetallAsync(key)
 
-        if (person)
+        if (person) {
+            person.age = Number(person.age)
             people.push(person)
+        }
     }
 
     return people
@@ -47,10 +53,10 @@ const getAllPeople = async () => {
 /**
  * Creates new Person object with given attributes.
  */
-const createPerson = async (email, firstName, lastName, department, age) => {
+const createPerson = async person => {
 
     const client = redis.getClient()
-    const personKey = keyGenerator.getPersonHashKey(email)
+    const personKey = keyGenerator.getPersonHashKey(person.email)
 
     // check duplicates
     if (await client.hgetAsync(personKey, 'email') !== null)
@@ -63,11 +69,11 @@ const createPerson = async (email, firstName, lastName, department, age) => {
         }
 
     const newPerson = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        department: department,
-        age: age || 0
+        email: person.email,
+        firstName: person.firstName,
+        lastName: person.lastName,
+        department: person.department,
+        age: person.age || 0
     }
 
     // add a person key (email) to the set of people
@@ -81,29 +87,27 @@ const createPerson = async (email, firstName, lastName, department, age) => {
 /**
  * Updates the Person object with new attributes.
  */
-const updatePerson = async (email, firstName, lastName, department, age) => {
+const updatePerson = async person => {
 
     const client = redis.getClient()
-    const personKey = keyGenerator.getPersonHashKey(email)
-
-    const newAttrs = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        department: department,
-        age: age
-    }
+    const personKey = keyGenerator.getPersonHashKey(person.email)
 
     // get a current hash represented by key (email)
     const oldPerson = await client.hgetallAsync(personKey)
-    const updatedPerson = {}
+    const updatedPerson = {
+        email: person.email,
+        firstName: person.firstName,
+        lastName: person.lastName,
+        department: person.department,
+        age: person.age
+    }
 
     // update only new attributes
     _.forEach(oldPerson, (attr, key) => {
-        if (newAttrs[key] === undefined || newAttrs[key] === attr)
+        if (updatedPerson[key] === undefined || updatedPerson[key] === attr)
             updatedPerson[key] = attr
         else 
-            updatedPerson[key] = newAttrs[key]
+            updatedPerson[key] = updatedPerson[key]
     })
     
     // update a hash represented by person key (email) with new attributes
