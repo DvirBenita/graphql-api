@@ -4,16 +4,6 @@ const _ = require('lodash')
 const peopleSetKey = 'People:Set'
 
 /**
- * Returns timestamp and UTC String of actual Time
- */
-const getCurrentTime = () => {
-    return {
-        currentT: Date.now(),
-        currentD: new Date(Date.now()).toUTCString()
-    }
-}
-
-/**
  * Gets the Person object for a given email.
  */
 const getPerson = async email => {
@@ -29,9 +19,9 @@ const getPerson = async email => {
 
     const client = redis.getClient()
     const personKey = `${email}:Person`
-    const person = await client.hgetallAsync(personKey)
 
-    return person
+    // get a hash represented by a person key (email)
+    return await client.hgetallAsync(personKey)
 }
 /**
  * Gets all Person objects.
@@ -39,10 +29,14 @@ const getPerson = async email => {
 const getAllPeople = async () => {
 
     const client = redis.getClient()
-    const personKeys = await client.smembersAsync(peopleSetKey)
     const people = []
 
+    // get a set of all person keys 
+    const personKeys = await client.smembersAsync(peopleSetKey)
+
     for (const key of personKeys) {
+
+        // get a hash represented by key (email) in the set
         const person = await client.hgetallAsync(key)
 
         if (person)
@@ -59,7 +53,7 @@ const createPerson = async (email, firstName, lastName, department, age) => {
     const client = redis.getClient()
     const personKey = `${email}:Person`
 
-    // checking duplicates
+    // check duplicates
     if (await client.hgetAsync(personKey, 'email') !== null)
         return {
             email: 'Already Exists',
@@ -77,7 +71,10 @@ const createPerson = async (email, firstName, lastName, department, age) => {
         age: age || 0
     }
 
+    // add a person key (email) to the set of people
     await client.saddAsync(peopleSetKey, personKey)
+
+    // create a hash represented by person key (email)
     await client.hmsetAsync(personKey, newPerson)
 
     return newPerson
@@ -97,22 +94,20 @@ const updatePerson = async (email, firstName, lastName, department, age) => {
         department: department,
         age: age
     }
-    const oldPerson = await client.hgetallAsync(personKey)
 
+    // get a current hash represented by key (email)
+    const oldPerson = await client.hgetallAsync(personKey)
     const updatedPerson = {}
 
+    // update only new attributes
     _.forEach(oldPerson, (attr, key) => {
         if (newAttrs[key] === undefined || newAttrs[key] === attr)
             updatedPerson[key] = attr
         else 
             updatedPerson[key] = newAttrs[key]
     })
-
-    if (email !== oldPerson['email']){
-        await client.sremAsync(peopleSetKey, oldPerson['email'])
-        await client.saddAsync(peopleSetKey, personKey)
-    }
     
+    // update a hash represented by person key (email) with new attributes
     const result = await client.hmsetAsync(personKey, updatedPerson)
     
     return result === 'OK' ? true : false
@@ -124,7 +119,10 @@ const deletePerson = async email => {
     const client = redis.getClient()
     const personKey = `${email}:Person`
 
+    // remove person key (email) from the set of people
     await client.sremAsync(peopleSetKey, personKey)
+
+    // remove a hash represented by person key (email)
     const result = await client.delAsync(personKey)
     
     return result ? true : false    
