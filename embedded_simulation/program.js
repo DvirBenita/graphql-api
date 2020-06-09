@@ -19,7 +19,7 @@ const post = (data) => {
     const request = http.request(options, res => {
         res.setEncoding('utf8')
     
-        fs.createReadStream('./response.log').pipe(res.pipe(fs.createWriteStream('./response.log')))
+        res.pipe(fs.createWriteStream('./response.log', {flags: 'a'}))
     
         res.on('end', () => {
             console.log('request have ended')
