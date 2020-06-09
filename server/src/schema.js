@@ -1,6 +1,5 @@
 const { gql } = require('apollo-server-express')
 
-
 const Query = gql`
 
     scalar Timestamp
@@ -9,11 +8,11 @@ const Query = gql`
         reading(timestamp: String): Reading
         readings: [Reading!]
 
-        people: [Person!]
         person(email: String): Person
+        people: [Person!]
 
-        scans(email: String, status: String): [Scan!]
         scan(timestamp: String): Scan
+        scans(email: String, status: String): [Scan!]
     }
 
     type Reading {
@@ -46,6 +45,9 @@ const Mutation = `
         createPerson(email: String!, firstName: String!, lastName: String!, department: String!, age: Int): Person!
         deletePerson(email: String!): Boolean!
         updatePerson(email: String!, firstName: String, lastName: String, department: String, age: Int): Boolean!
+
+        createScan(timestamp: String!, email: String!, status: String): Scan!
+        deleteScan(timestamp: String!): Boolean!
     }
 `
 
