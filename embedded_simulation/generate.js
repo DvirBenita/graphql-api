@@ -3,27 +3,27 @@ const sampleData = require('./sampleData')
 const getReading = (pivot) => {
 
     const timestamp = Date.now().toString()
-    const reading = Math.floor(Math.random() * (pivot-60))
-    const query = `mutation createReading($timestamp: String!, $reading: Int!) { 
-        createReading(timestamp: $timestamp, reading: $reading) {
+    const value = Math.floor(Math.random() * (pivot-60))
+    const query = `mutation createReading($timestamp: String!, $value: Int!) { 
+        createReading(timestamp: $timestamp, value: $value) {
             timestamp
             date
-            reading
+            value
         }
     }`
 
-    if (reading > 25 || reading < -10)
+    if (value > 25 || value < -10)
         return JSON.stringify(
             {
                 query,
                 variables: {
                     timestamp,
-                    reading
+                    value
                 }
             }
         )
     else 
-        return false
+        return ''
 }
 
 const getScan = (pivot) => {
