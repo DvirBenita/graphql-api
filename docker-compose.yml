@@ -28,7 +28,7 @@ services:
         restart: always
         build: ./embedded_simulation
         volumes: 
-            - ./embedded_simulation:/usr/src/simulation
+            - ./embedded_simulation:/usr/src/app/simulation
         environment: 
             - GRAPHQLAPI=grapql-api
         depends_on: 
