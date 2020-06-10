@@ -1,4 +1,6 @@
+// require dotenv to access enviroment ( process.env ) variables
 require('dotenv/config')
+
 const http = require('http')
 const fs = require('fs')
 const { getReading, getScan } = require('./generate')
@@ -15,6 +17,12 @@ const options = {
     }
 }
 
+/**
+ * Creates HTTP POST request to graphql api and sends data in form of mutation query.
+ * 
+ * @param {string} data - represent mutation queries recieved from ./generate.js module
+ * 
+ */
 const post = (data) => {
 
     const request = http.request(options, res => {
@@ -35,8 +43,18 @@ const post = (data) => {
 
 }
 
+/**
+ * Get reading and scan create mutation query every 10 seconds.
+ * Send request to graphql api with defined mutation queries by executing post function above.
+ * 
+ */
 let pivot = 0
 setInterval(() => {
+    
+    if (pivot >= Number.MAX_SAFE_INTEGER)
+        pivot = 0
+
+    // change pivot to get more varied values in getReading and getScan functions
     pivot += 27
 
     const reading = getReading(pivot % 200)
