@@ -18,9 +18,17 @@ docker-compose up
 
 ## Usage
 
+After docker container will successfully run. Go to [localhost/graphql](htttp://localhost:3000/graphql) and try some of the queries described below.
+
+Simulation container is sending POST requests every 10 seconds, so just wait a bit to get some response.
+
+[GET](graphql-api#people-query-request)
+[CREATE](graphql-api#people-create-request)
+[DELETE](graphql-api#people-delete-request)
+
 ### Example query requests
 
-#### request
+#### people query Request
 
 ```graphql
 query {
@@ -34,7 +42,7 @@ query {
 }
 ```
 
-#### response
+#### people query Response
 
 ```json
 {
@@ -52,7 +60,7 @@ query {
 }
 ```
 
-#### request
+#### reading query Request
 
 ```graphql
 query {
@@ -63,6 +71,8 @@ query {
   }
 }
 ```
+
+#### reading query Response
 
 ```json
 {
@@ -88,7 +98,7 @@ query {
 }
 ```
 
-#### request
+#### scan query Request
 
 ```graphql
 query {
@@ -100,6 +110,8 @@ query {
   }
 }
 ```
+
+#### scan query Response
 
 ```json
 {
@@ -118,6 +130,202 @@ query {
         "status": "not verified"
       }
     ]
+  }
+}
+```
+
+#### people create Request
+
+```graphql
+mutation {
+  createPerson(
+    email: "martin.albert@gmail.com"
+    firstName: "Martin"
+    lastName: "Albert"
+    department: "IT"
+    age: 21
+  ) {
+    email
+    firstName
+    lastName
+    department
+    age
+  }
+}
+```
+
+#### people create Response
+
+```json
+{
+  "data": {
+    "createPerson": {
+      "email": "martin.albert@gmail.com",
+      "firstName": "Martin",
+      "lastName": "Albert",
+      "department": "IT",
+      "age": 21
+    }
+  }
+}
+```
+
+#### reading create Request
+
+```graphql
+mutation {
+  createReading(timestamp: "1191242229353", value: -124) {
+    timestamp
+    date
+    value
+  }
+}
+```
+
+#### reading create Response
+
+```json
+{
+  "data": {
+    "createReading": {
+      "timestamp": 1191242229343,
+      "date": "Mon, 01 Oct 2007 12:37:09 GMT",
+      "value": -124
+    }
+  }
+}
+```
+
+#### scan create Request
+
+```graphql
+mutation {
+  createScan(
+    timestamp: "1111246022353",
+    email: "martin.albert@gmail.com",
+    status: "verified"
+  ){
+    timestamp
+    date
+    email
+    status
+  }
+}
+```
+
+#### scan create Response
+
+```json
+{
+  "data": {
+    "createScan": {
+      "timestamp": 1111246022353,
+      "date": "Sat, 19 Mar 2005 15:27:02 GMT",
+      "email": "martin.albert@gmail.com",
+      "status": "verified"
+    }
+  }
+}
+```
+
+#### people delete Request
+##### single delete
+
+```graphql
+mutation {
+  deletePerson(email: "martin.albert@gmail.com")
+}
+```
+
+##### delete all
+
+```graphql
+mutation {
+  deleteAllPeople
+}
+```
+
+#### people delete Response
+
+```json
+{
+  "data": {
+    "deletePerson": true
+  }
+}
+```
+```json
+{
+  "data": {
+    "deleteAllPeople": true
+  }
+}
+```
+
+#### reading delete Request
+##### single delete
+
+```graphql
+mutation {
+  deleteReading(timestamp: "1191242229343")
+}
+```
+
+##### delete all
+
+```graphql
+mutation {
+  deleteAllReadings
+}
+```
+
+#### reading delete Response
+
+```json
+{
+  "data": {
+    "deleteReading": true
+  }
+}
+```
+```json
+{
+  "data": {
+    "deleteAllReadings": true
+  }
+}
+```
+
+#### scan delete Request
+##### single delete
+
+```graphql
+mutation {
+  deleteScan(timestamp: "1111246022353")
+}
+```
+
+##### delete all
+
+```graphql
+mutation {
+  deleteAllScans
+}
+```
+
+#### scan delete Response
+
+```json
+{
+  "data": {
+    "deleteReading": true
+  }
+}
+```
+```json
+{
+  "data": {
+    "deleteScan": true
   }
 }
 ```
