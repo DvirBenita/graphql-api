@@ -6,7 +6,7 @@ bluebird.promisifyAll(redis)
 
 // Create a client and connect to Redis
 const client = redis.createClient({
-  host: process.env.REDIST_HOST,
+  host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
 })
 

@@ -6,7 +6,7 @@ const scanImpl = daoLoader.loadDao('scan')
 
 module.exports = {
     /**
-     * Returns timestamp and UTC String of actual Time
+     * Gets the Person object for a given email.
      */
     getPerson: async email => personImpl.getPerson(email),
     
