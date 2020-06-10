@@ -36,9 +36,7 @@ docker exec -it embedded-simulation bash
 ```
 
 Make sure you are in right working directory:\
-__/usr/src/app/server__\
-or\
-__/usr/src/app/simulation__
+__/usr/src/app/server__ or __/usr/src/app/simulation__
 
 Then run this command to launch jest:
 
