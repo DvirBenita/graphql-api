@@ -7,13 +7,13 @@ Embedded system POST data to our server when the positive or negative reading is
 Or when some face is recognized and evaluated as valid or not valid in some specific place.
 
 [ESP32 Hall Effect Sensor](https://randomnerdtutorials.com/esp32-hall-effect-sensor/)\
+[ESP32 Video streaming and face recognition](https://randomnerdtutorials.com/esp32-cam-video-streaming-face-recognition-arduino-ide/)
 [What is Hall Sensor](https://se.rs-online.com/web/generalDisplay.html?id=ideas-and-advice/hall-effect-sensors-guide)\
 [How to read signals from a hall effect sensor](https://www.progressiveautomations.com/blogs/how-to/how-to-read-the-signal-from-a-hall-effect-sensor-using-an-arduino)\
-[ESP32 Video streaming and face recognition](https://randomnerdtutorials.com/esp32-cam-video-streaming-face-recognition-arduino-ide/)
 
 ## Installation
 
-```bash
+```
 docker-compose up // -d to run in backgrouond
 ```
 
@@ -36,8 +36,8 @@ docker exec -it embedded-simulation bash
 ```
 
 Make sure you are in right working directory:\
-** /usr/src/app/server **\ 
-or\ 
+** /usr/src/app/server ** \
+or\
 ** /usr/src/app/simulation **
 
 Then run this command to launch jest:
