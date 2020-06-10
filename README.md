@@ -24,7 +24,7 @@ Simulation container is sending POST requests every 10 seconds, so just wait a b
 
 [GET](#people-query-request)\
 [CREATE](#people-create-request)\
-[DELETE](#people-delete-request)\
+[DELETE](#people-delete-request)
 
 ### Example query requests
 
