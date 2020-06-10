@@ -4,8 +4,9 @@
   "description": "HTTP POST Requests simulation of Hall Effect sensor",
   "main": "program.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node program.js"
+    "start": "node program.js",
+    "test": "jest",
+    "testdev": "jest --watch"
   },
   "keywords": [
     "http",
@@ -14,5 +15,8 @@
     "systems"
   ],
   "author": "Martin Albert",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^26.0.1"
+  }
 }
