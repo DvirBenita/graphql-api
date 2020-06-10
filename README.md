@@ -18,7 +18,9 @@ docker-compose up
 
 ## Usage
 
-After docker container will successfully run. Go to [localhost/graphql](htttp://localhost:3000/graphql) and try some of the queries described below.
+After docker container will successfully run. Go to 
+[localhost/graphql](http://localhost:3000/graphql) 
+and try some of the queries described below.
 
 Simulation container is sending POST requests every 10 seconds, so just wait a bit to get some response.
 
