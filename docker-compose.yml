@@ -1,0 +1,35 @@
+version: '3'
+
+services: 
+    redis:
+        container_name: redisdatabase
+        image: redis
+        expose: 
+            - 6379
+
+    server:
+        container_name: grapql-api
+        restart: always
+        build: ./server
+        volumes: 
+            - ./server:/usr/src/app/server
+        ports: 
+            - 3000:3000
+        environment: 
+            - REDIS_HOST=redisdatabase
+            - REDIS_PORT=6379
+            - REDIS_PREFIX=em2
+            - CURRENT_DATABASE=redis
+        depends_on: 
+            - redis
+
+    simulation:
+        container_name: embedded-simulation
+        restart: always
+        build: ./embedded_simulation
+        volumes: 
+            - ./embedded_simulation:/usr/src/simulation
+        environment: 
+            - GRAPHQLAPI=grapql-api
+        depends_on: 
+            - server

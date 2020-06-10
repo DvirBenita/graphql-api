@@ -1,9 +1,10 @@
+require('dotenv/config')
 const http = require('http')
 const fs = require('fs')
 const { getReading, getScan } = require('./generate')
 
 const interval = 10000 // 10 seconds
-const serverUrl = '127.0.0.1'
+const serverUrl = process.env.GRAPHQLAPI
 const options = {
     hostname: serverUrl,
     port: 3000,
