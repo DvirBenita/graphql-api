@@ -22,7 +22,7 @@ After docker container will successfully run. Go to
 [localhost/graphql](http://localhost:3000/graphql) 
 and try some of the queries described below.
 
-Simulation container is sending POST requests every 10 seconds, so just wait a bit to get some response.
+Simulation container is sending POST requests with reading and scan object every 10 seconds, so just wait a bit to get some response.
 
 [GET](#people-query-request)\
 [CREATE](#people-create-request)\
