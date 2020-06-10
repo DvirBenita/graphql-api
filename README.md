@@ -22,9 +22,9 @@ After docker container will successfully run. Go to [localhost/graphql](htttp://
 
 Simulation container is sending POST requests every 10 seconds, so just wait a bit to get some response.
 
-[GET](graphql-api#people-query-request)
-[CREATE](graphql-api#people-create-request)
-[DELETE](graphql-api#people-delete-request)
+[GET](#people-query-request)\
+[CREATE](#people-create-request)\
+[DELETE](#people-delete-request)\
 
 ### Example query requests
 
