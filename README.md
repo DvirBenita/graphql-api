@@ -2,8 +2,9 @@
 
 We're expecting that embedded system we're simulating can communicate via HTTP. 
 
-Simulated embedded system can be microcontrollers with a hall effect sensor at some building.
+Simulated embedded system can be microcontrollers with a hall effect sensor at some building and with connected camera.
 Embedded system POST data to our server when the positive or negative reading is captured.
+Or when some face is recognized and evaluated as valid or not valid in some specific place.
 
 [ESP32 Hall Effect Sensor](https://randomnerdtutorials.com/esp32-hall-effect-sensor/)\
 [What is Hall Sensor](https://se.rs-online.com/web/generalDisplay.html?id=ideas-and-advice/hall-effect-sensors-guide)\
@@ -13,7 +14,36 @@ Embedded system POST data to our server when the positive or negative reading is
 ## Installation
 
 ```bash
-docker-compose up
+docker-compose up // -d to run in backgrouond
+```
+
+## Running the tests
+
+Tests are written in jest testing framework and are focused on unit and integration testing of Redis data access objects. 
+
+Let the docker-compose run in background or open a new tab to terminal and run this command to open a bash inside a container:
+
+#### server container
+
+```bash
+docker exec -it grapql-api bash
+```
+
+#### simulation container
+
+```bash
+docker exec -it embedded-simulation bash
+```
+
+Make sure you are in right working directory:\
+** /usr/src/app/server **\ 
+or\ 
+** /usr/src/app/simulation **
+
+Then run this command to launch jest:
+
+```bash
+npm test
 ```
 
 ## Usage
