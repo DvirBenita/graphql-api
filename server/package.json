@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "HTTP Server for handling requests",
   "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "server": "nodemon ./src/server.js",
     "babel-node": "babel-node --presets=@babel/env",
     "start": "nodemon --exec npm run babel-node -- ./src/server.js",
-    "build": "babel src -d dist"
+    "build": "babel src -d dist",
+    "test": "jest",
+    "testdev": "jest --watch"
   },
   "keywords": [
     "http",
@@ -27,14 +32,17 @@
     "graphql-tools": "^6.0.8",
     "lodash": "^4.17.15",
     "morgan": "^1.10.0",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "shortid": "^2.2.15"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/node": "^7.10.1",
     "@babel/plugin-transform-async-to-generator": "^7.10.1",
+    "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.4"
   }
 }
