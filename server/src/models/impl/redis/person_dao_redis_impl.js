@@ -21,7 +21,7 @@ const getPerson = async email => {
 
     // get a hash represented by a person key (email)
     const person = await client.hgetallAsync(personKey)
-    if(person)
+    if (person)
         person.age = Number(person.age)
 
     return person

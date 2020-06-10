@@ -3,27 +3,16 @@ const keyGenerator = require('./redisKeyGenerator')
 const _ = require('lodash')
 
 /**
- * Returns timestamp and UTC String of actual Time
- */
-const getCurrentTime = () => {
-    return {
-        currentT: Date.now(),
-        currentD: new Date(Date.now()).toUTCString()
-    }
-}
-
-/**
  * Gets the Scan object for a given timestamp.
  */
 const getScan = async timestamp => {
     
-    const { currentT, currentD } = getCurrentTime()
     if (timestamp === undefined) 
         return {
-            timestamp: currentT,
-            date: currentD,
-            email: '',
-            status: 'Timestamp not provided',
+            timestamp: 0,
+            date: 'Timestamp not specified',
+            email: 'Timestamp not specified',
+            status: 'Timestamp not specified',
         }
     
     timestamp = Number(timestamp)
@@ -31,7 +20,11 @@ const getScan = async timestamp => {
     const scanKey = keyGenerator.getScanHashKey(timestamp)
 
     // get a hash represented by a scan key (timestamp)
-    return await client.hgetallAsync(scanKey)
+    const scan = await client.hgetallAsync(scanKey)
+    if (scan) 
+        scan.timestamp = Number(scan.timestamp)
+    
+    return scan
 }
 /**
  * Gets all Scan objects grouped by given arguments.
@@ -49,18 +42,22 @@ const getScans = async filter => {
         // get a hash represented by key (timestamp) in the set
         const scan = await client.hgetallAsync(key)
 
-        if (scan)
+        if (scan) {
+            scan.timestamp = Number(scan.timestamp)
             scans.push(scan)
+        }
     }
- 
-    if (!filter.email && !filter.status)
-        return scans
-    else if (!filter.status)
-        return _.filter(scans, {email: filter.email})
-    else if (!filter.email)
-        return _.filter(scans, {status: filter.status})
-    else 
-        return _.filter(scans, {email: filter.email, status: filter.status})
+    
+    if (filter === undefined) {
+        if (filter.email && filter.status)
+            return _.filter(scans, {email: filter.email, status: filter.status})
+        else if (!filter.status)
+            return _.filter(scans, {email: filter.email})
+        else if (!filter.email)
+            return _.filter(scans, {status: filter.status})
+    } 
+
+    return scans
 }   
 /**
  * Creates new Scan object with given arguments.
@@ -68,21 +65,20 @@ const getScans = async filter => {
 const createScan = async scan => {
 
     const timestamp = Number(scan.timestamp)
-    const { currentT, currentD } = getCurrentTime()
     const client = redis.getClient()
     const scanKey = keyGenerator.getScanHashKey(timestamp)
 
     // check duplicates
     if (await client.hgetAsync(scanKey, 'email') !== null)
         return {
-            timestamp: currentT,
-            date: currentD,
-            email: '',
-            status: 'Duplicate found',
+            timestamp: 0,
+            date: 'Already Exists',
+            email: 'Already Exists',
+            status: 'Already Exists',
         }
 
     const newScan = {
-        timestamp: new Date(timestamp),
+        timestamp: timestamp,
         date: new Date(timestamp).toUTCString(),
         email: scan.email,
         status: scan.status || 'not verified',

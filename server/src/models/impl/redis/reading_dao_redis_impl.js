@@ -3,25 +3,14 @@ const keyGenerator = require('./redisKeyGenerator')
 const _ = require('lodash')
 
 /**
- * Returns timestamp and UTC String of actual Time
- */
-const getCurrentTime = () => {
-    return {
-        currentT: Date.now(),
-        currentD: new Date(Date.now()).toUTCString()
-    }
-}
-
-/**
  * Gets the Reading object for a given timestamp.
  */
 const getReading = async timestamp => {
 
-    const { currentT, currentD } = getCurrentTime()
     if (timestamp === undefined)
         return {
-            timestamp: currentT,
-            date: currentD,
+            timestamp: 0,
+            date: 'Timestamp not specified',
             value: 0,
         }
 
@@ -30,8 +19,13 @@ const getReading = async timestamp => {
     const readingKey = keyGenerator.getReadingHashKey(timestamp)
 
     // get a hash represented by a reading key (timestamp)
-    return await client.hgetallAsync(readingKey)
+    const reading = await client.hgetallAsync(readingKey)
+    if (reading) {
+        reading.timestamp = Number(reading.timestamp)
+        reading.value = Number(reading.value)
+    }
 
+    return reading
 }
 /**
  * Gets all Reading objects.
@@ -49,8 +43,11 @@ const getAllReadings = async () => {
         // get a hash represented by key (timestamp) in the set
         const reading = await client.hgetallAsync(key)
 
-        if (reading)
+        if (reading){
+            reading.timestamp = Number(reading.timestamp)
+            reading.value = Number(reading.value)
             readings.push(reading)
+        }
     }
 
     return readings
@@ -61,22 +58,21 @@ const getAllReadings = async () => {
 const createReading = async reading => {
     
     const timestamp = Number(reading.timestamp)
-    const { currentT, currentD } = getCurrentTime()
     const client = redis.getClient()
     const readingKey = keyGenerator.getReadingHashKey(timestamp)
 
     // check duplicates
-    if (await client.hgetAsync(readingKey, 'reading') !== null)
+    if (await client.hgetAsync(readingKey, 'value') !== null)
         return {
-            timestamp: currentT,
-            date: currentD,
-            reading: 0,
+            timestamp: 0,
+            date: "Already Exists",
+            value: 0,
         }
 
     const newReading = {
-        timestamp: new Date(timestamp),
+        timestamp: timestamp,
         date: new Date(timestamp).toUTCString(),
-        reading: reading.value
+        value: reading.value
     }
     
     // add a reading key (timestamp) to the set of readings
@@ -100,7 +96,6 @@ const deleteReading = async timestamp => {
 
     // remove a hash represented by reading key (timestamp)
     const result = await client.delAsync(readingKey)
-    console.log(result)
     
     return result ? true : false    
 }
