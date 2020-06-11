@@ -14,7 +14,7 @@ Or when some face is recognized and evaluated as valid or not valid in some spec
 ## Installation
 
 ```
-docker-compose up // -d to run in backgrouond
+docker-compose up // -d to run in background
 ```
 
 ## Running the tests
