@@ -1,5 +1,8 @@
 const { gql } = require('apollo-server-express')
 
+/**
+ * Schema for GraphQL Query - to get the objects
+ */
 const Query = gql`
 
     scalar Timestamp
@@ -37,6 +40,9 @@ const Query = gql`
     }
 `
 
+/**
+ * Schema for GraphQL Mutation - to modify the objects
+ */
 const Mutation = `
     type Mutation {
         createReading(timestamp: String!, value: Int!): Reading!

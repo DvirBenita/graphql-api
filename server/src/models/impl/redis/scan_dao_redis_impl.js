@@ -4,6 +4,8 @@ const _ = require('lodash')
 
 /**
  * Gets the Scan object for a given timestamp.
+ * @param {string} timestamp - Timestamp representing scan.
+ * @returns {Promise} - Promise containing scan object.
  */
 const getScan = async timestamp => {
     
@@ -26,8 +28,11 @@ const getScan = async timestamp => {
     
     return scan
 }
+
 /**
  * Gets all Scan objects grouped by given arguments.
+ * @param {Object} filter - Object containing email or status field to filter scan objects
+ * @returns {Promise} - Promise containing scan objects.
  */
 const getScans = async filter => {
 
@@ -59,8 +64,11 @@ const getScans = async filter => {
 
     return scans
 }   
+
 /**
  * Creates new Scan object with given arguments.
+ * @param {Object} scan - Object representing scan to be created.
+ * @returns {Promise} - Promise containing new scan object.
  */
 const createScan = async scan => {
 
@@ -92,8 +100,11 @@ const createScan = async scan => {
     
     return newScan
 }
+
 /**
  * Deletes the Scan object represented by given timetamp.
+ * @param {string} timestamp - Timestamp representing some reading.
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const deleteScan = async timestamp => {
 
@@ -109,8 +120,10 @@ const deleteScan = async timestamp => {
 
     return result ? true : false    
 }
+
 /**
- * Deletes all Scan objects.
+ * Deletes all Scan objects
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const deleteAllScans = async timestamp => {
 

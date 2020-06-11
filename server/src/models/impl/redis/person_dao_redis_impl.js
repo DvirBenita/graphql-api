@@ -4,6 +4,8 @@ const _ = require('lodash')
 
 /**
  * Gets the Person object for a given email.
+ * @param {string} email - Email representing some person.
+ * @returns {Promise} - Promise containing person object.
  */
 const getPerson = async email => {
 
@@ -26,8 +28,10 @@ const getPerson = async email => {
 
     return person
 }
+
 /**
  * Gets all Person objects.
+ * @returns {Promise} - Promise containing all person objects.
  */
 const getAllPeople = async () => {
 
@@ -50,8 +54,11 @@ const getAllPeople = async () => {
 
     return people
 }
+
 /**
  * Creates new Person object with given attributes.
+ * @param {Object} person - Object representing person to be created.
+ * @returns {Promise} - Promise containing new person object.
  */
 const createPerson = async person => {
 
@@ -84,8 +91,11 @@ const createPerson = async person => {
 
     return newPerson
 }
+
 /**
  * Updates the Person object with new attributes.
+ * @param {Object} person - Object representing person to be updated.
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const updatePerson = async person => {
 
@@ -115,8 +125,11 @@ const updatePerson = async person => {
     
     return result === 'OK' ? true : false
 }
+
 /**
  * Deletes the Person object represented by given email.
+ * @param {string} email - Email representing some person.
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const deletePerson = async email => {
     const client = redis.getClient()
@@ -130,8 +143,10 @@ const deletePerson = async email => {
     
     return result ? true : false    
 }
+
 /**
- * Deletes all Person objects.
+ * Deletes the Person object represented by given email.
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const deleteAllPeople = async () => {
     const client = redis.getClient()

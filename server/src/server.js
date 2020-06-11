@@ -1,4 +1,6 @@
+// require dotenv to access enviroment ( process.env ) variables
 require('dotenv/config')
+
 const http = require('http')
 const app = require('./app')
 

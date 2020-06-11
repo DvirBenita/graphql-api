@@ -4,6 +4,8 @@ const _ = require('lodash')
 
 /**
  * Gets the Reading object for a given timestamp.
+ * @param {string} timestamp - Timestamp representing reading.
+ * @returns {Promise} - Promise containing reading object.
  */
 const getReading = async timestamp => {
 
@@ -27,8 +29,10 @@ const getReading = async timestamp => {
 
     return reading
 }
+
 /**
  * Gets all Reading objects.
+ * @returns {Promise} - Promise containing all reading objects.
  */
 const getAllReadings = async () => {
 
@@ -52,8 +56,11 @@ const getAllReadings = async () => {
 
     return readings
 }
+
 /**
- * Creates new Reading object with given arguments.
+ * Creates new Reading object with given attributes.
+ * @param {Object} reading - Object representing reading to be created.
+ * @returns {Promise} - Promise containing new reading object.
  */
 const createReading = async reading => {
     
@@ -83,8 +90,11 @@ const createReading = async reading => {
     
     return newReading
 }
+
 /**
- * Deletes the Reading object represented by given email.
+ * Deletes the Reading object represented by given timestamp.
+ * @param {string} timestamp - Timestamp representing some reading.
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const deleteReading = async timestamp => {
 
@@ -99,8 +109,10 @@ const deleteReading = async timestamp => {
     
     return result ? true : false    
 }
+
 /**
- * Deletes all Reading objects.
+ * Deletes all Reading objects
+ * @returns {Promise} - Promise indicating the operation has completed.
  */
 const deleteAllReadings = async () => {
     const client = redis.getClient()

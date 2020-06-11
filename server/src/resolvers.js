@@ -1,8 +1,11 @@
 const GraphQLTimestamp = require('./GraphQLTimestamp')
 
 const resolvers = {
+    
     Timestamp: GraphQLTimestamp,
+
     Query: {
+
         reading: (parent, { timestamp }, { models }) => models.getReading(timestamp),
 
         readings: (parent, args, { models }) => models.getAllReadings(),
@@ -14,9 +17,11 @@ const resolvers = {
         scan: (parent, { timestamp }, { models }) => models.getScan(timestamp),
 
         scans: (parent, filter, { models }) => models.getScans(filter)
+
     },
 
     Mutation: {
+
         createReading: (parent, reading, { models }) => models.createReading(reading),
         
         deleteReading: (parent, { timestamp }, { models }) => models.deleteReading(timestamp),
@@ -36,6 +41,7 @@ const resolvers = {
         deleteScan: (parent, { timestamp }, { models }) => models.deleteScan(timestamp),
 
         deleteAllScans: (parent, args, { models }) => models.deleteAllScans(),
+        
     }
 }
 
