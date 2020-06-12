@@ -37,12 +37,11 @@ const getReading = async timestamp => {
 const getAllReadings = async () => {
 
     const client = redis.getClient()
-    const readings = []
     
     // get a set of all reading keys 
     const readingKeys = await client.smembersAsync(keyGenerator.getReadingsSetKey())
 
-    for (const key of readingKeys) {
+    return readingKeys.reduce(async (readings, key, index) => {
 
         // get a hash represented by key (timestamp) in the set
         const reading = await client.hgetallAsync(key)
@@ -50,11 +49,12 @@ const getAllReadings = async () => {
         if (reading){
             reading.timestamp = Number(reading.timestamp)
             reading.value = Number(reading.value)
-            readings.push(reading)
+            readings[index] = reading
         }
-    }
 
-    return readings
+        return readings
+
+    }, [])
 }
 
 /**

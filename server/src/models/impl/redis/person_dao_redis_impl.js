@@ -36,23 +36,22 @@ const getPerson = async email => {
 const getAllPeople = async () => {
 
     const client = redis.getClient()
-    const people = []
 
     // get a set of all person keys 
     const personKeys = await client.smembersAsync(keyGenerator.getPeopleSetKey())
 
-    for (const key of personKeys) {
-
+    return personKeys.reduce( async (people, key, index) => {
+        
         // get a hash represented by key (email) in the set
         const person = await client.hgetallAsync(key)
 
         if (person) {
             person.age = Number(person.age)
-            people.push(person)
+            people[index] = person
         }
-    }
 
-    return people
+        return people
+    }, [])
 }
 
 /**
@@ -93,7 +92,7 @@ const createPerson = async person => {
 }
 
 /**
- * Updates the Person object with new attributes.
+ * Updates the Person object with new fields.
  * @param {Object} person - Object representing person to be updated.
  * @returns {Promise} - Promise indicating the operation has completed.
  */
@@ -112,15 +111,15 @@ const updatePerson = async person => {
         age: person.age
     }
 
-    // update only new attributes
-    _.forEach(oldPerson, (attr, key) => {
-        if (updatedPerson[key] === undefined || updatedPerson[key] === attr)
-            updatedPerson[key] = attr
+    // update only new fields
+    _.forEach(oldPerson, (field, key) => {
+        if (updatedPerson[key] === undefined || updatedPerson[key] === field)
+            updatedPerson[key] = field
         else 
             updatedPerson[key] = updatedPerson[key]
     })
     
-    // update a hash represented by person key (email) with new attributes
+    // update a hash represented by person key (email) with new fields
     const result = await client.hmsetAsync(personKey, updatedPerson)
     
     return result === 'OK' ? true : false

@@ -37,12 +37,11 @@ const getScan = async timestamp => {
 const getScans = async filter => {
 
     const client = redis.getClient()
-    const scans = []
 
     // get a set of all scan keys 
     const scanKeys = await client.smembersAsync(keyGenerator.getScansSetKey())
 
-    for (const key of scanKeys) {
+    const scans = scanKeys.reduce( async (scans, key, index) => {
 
         // get a hash represented by key (timestamp) in the set
         const scan = await client.hgetallAsync(key)
@@ -51,7 +50,9 @@ const getScans = async filter => {
             scan.timestamp = Number(scan.timestamp)
             scans.push(scan)
         }
-    }
+
+        return scans
+    }, [])
     
     if (filter === undefined) {
         if (filter.email && filter.status)
