@@ -1,6 +1,6 @@
 # GraphQL API for simulated embedded systems
 
-We're expecting that embedded system we're simulating can communicate via HTTP. 
+We're expecting that embedded system we're simulating can communicate via HTTP.
 
 Simulated embedded system can be microcontrollers with a hall effect sensor at some building and with connected camera.
 Embedded system POST data to our server when the positive or negative reading is captured.
@@ -19,7 +19,7 @@ docker-compose up // -d to run in background
 
 ## Running the tests
 
-Tests are written in jest testing framework and are focused on unit and integration testing of Redis data access objects. 
+Tests are written in jest testing framework and are focused on unit and integration testing of Redis data access objects.
 
 Let the docker-compose run in background or open a new tab to terminal and run this command to open a bash inside a container:
 
@@ -36,7 +36,7 @@ docker exec -it embedded-simulation bash
 ```
 
 Make sure you are in right working directory:\
-__/usr/src/app/server__ or __/usr/src/app/simulation__
+**/usr/src/app/server** or **/usr/src/app/simulation**
 
 Then run this command to launch jest:
 
@@ -46,8 +46,8 @@ npm test
 
 ## Usage
 
-After docker container will successfully run. Go to 
-[localhost/graphql](http://localhost:3000/graphql) 
+After docker container will successfully run. Go to
+[localhost/graphql](http://localhost:3000/graphql)
 and try some of the queries described below.
 
 Simulation container is sending POST requests with reading and scan object every 10 seconds, so just wait a bit to get some response.
@@ -62,13 +62,13 @@ Simulation container is sending POST requests with reading and scan object every
 
 ```graphql
 query {
-  people{
-    email
-    firstName
-    lastName
-    department
-    age
-  }
+    people {
+        email
+        firstName
+        lastName
+        department
+        age
+    }
 }
 ```
 
@@ -76,17 +76,17 @@ query {
 
 ```json
 {
-  "data": {
-    "people": [
-      {
-        "email": "martin.albert@gmail.com",
-        "firstName": "Martin",
-        "lastName": "Albert",
-        "department": "IT",
-        "age": 21
-      }
-    ]
-  }
+    "data": {
+        "people": [
+            {
+                "email": "martin.albert@gmail.com",
+                "firstName": "Martin",
+                "lastName": "Albert",
+                "department": "IT",
+                "age": 21
+            }
+        ]
+    }
 }
 ```
 
@@ -94,11 +94,11 @@ query {
 
 ```graphql
 query {
-  readings {
-    timestamp
-    date
-    value
-  }
+    readings {
+        timestamp
+        date
+        value
+    }
 }
 ```
 
@@ -106,25 +106,25 @@ query {
 
 ```json
 {
-  "data": {
-    "readings": [
-      {
-        "timestamp": 1591790202799,
-        "date": "Wed, 10 Jun 2020 11:56:42 GMT",
-        "value": -15
-      },
-      {
-        "timestamp": 1591790192799,
-        "date": "Wed, 10 Jun 2020 11:56:32 GMT",
-        "value": 44
-      },
-      {
-        "timestamp": 1591790172828,
-        "date": "Wed, 10 Jun 2020 11:56:12 GMT",
-        "value": 47
-      }
-    ]
-  }
+    "data": {
+        "readings": [
+            {
+                "timestamp": 1591790202799,
+                "date": "Wed, 10 Jun 2020 11:56:42 GMT",
+                "value": -15
+            },
+            {
+                "timestamp": 1591790192799,
+                "date": "Wed, 10 Jun 2020 11:56:32 GMT",
+                "value": 44
+            },
+            {
+                "timestamp": 1591790172828,
+                "date": "Wed, 10 Jun 2020 11:56:12 GMT",
+                "value": 47
+            }
+        ]
+    }
 }
 ```
 
@@ -132,12 +132,12 @@ query {
 
 ```graphql
 query {
-  scans {
-    timestamp
-    date
-    email
-    status
-  }
+    scans {
+        timestamp
+        date
+        email
+        status
+    }
 }
 ```
 
@@ -145,22 +145,22 @@ query {
 
 ```json
 {
-  "data": {
-    "scans": [
-      {
-        "timestamp": 1591790272747,
-        "date": "Wed, 10 Jun 2020 11:57:52 GMT",
-        "email": "peter.albert@gmail.com",
-        "status": "verified"
-      },
-      {
-        "timestamp": 1591790282754,
-        "date": "Wed, 10 Jun 2020 11:58:02 GMT",
-        "email": "martin.albert@gmail.com",
-        "status": "not verified"
-      }
-    ]
-  }
+    "data": {
+        "scans": [
+            {
+                "timestamp": 1591790272747,
+                "date": "Wed, 10 Jun 2020 11:57:52 GMT",
+                "email": "peter.albert@gmail.com",
+                "status": "verified"
+            },
+            {
+                "timestamp": 1591790282754,
+                "date": "Wed, 10 Jun 2020 11:58:02 GMT",
+                "email": "martin.albert@gmail.com",
+                "status": "not verified"
+            }
+        ]
+    }
 }
 ```
 
@@ -168,19 +168,19 @@ query {
 
 ```graphql
 mutation {
-  createPerson(
-    email: "martin.albert@gmail.com"
-    firstName: "Martin"
-    lastName: "Albert"
-    department: "IT"
-    age: 21
-  ) {
-    email
-    firstName
-    lastName
-    department
-    age
-  }
+    createPerson(
+        email: "martin.albert@gmail.com"
+        firstName: "Martin"
+        lastName: "Albert"
+        department: "IT"
+        age: 21
+    ) {
+        email
+        firstName
+        lastName
+        department
+        age
+    }
 }
 ```
 
@@ -188,15 +188,15 @@ mutation {
 
 ```json
 {
-  "data": {
-    "createPerson": {
-      "email": "martin.albert@gmail.com",
-      "firstName": "Martin",
-      "lastName": "Albert",
-      "department": "IT",
-      "age": 21
+    "data": {
+        "createPerson": {
+            "email": "martin.albert@gmail.com",
+            "firstName": "Martin",
+            "lastName": "Albert",
+            "department": "IT",
+            "age": 21
+        }
     }
-  }
 }
 ```
 
@@ -204,11 +204,11 @@ mutation {
 
 ```graphql
 mutation {
-  createReading(timestamp: "1191242229353", value: -124) {
-    timestamp
-    date
-    value
-  }
+    createReading(timestamp: "1191242229353", value: -124) {
+        timestamp
+        date
+        value
+    }
 }
 ```
 
@@ -216,13 +216,13 @@ mutation {
 
 ```json
 {
-  "data": {
-    "createReading": {
-      "timestamp": 1191242229343,
-      "date": "Mon, 01 Oct 2007 12:37:09 GMT",
-      "value": -124
+    "data": {
+        "createReading": {
+            "timestamp": 1191242229343,
+            "date": "Mon, 01 Oct 2007 12:37:09 GMT",
+            "value": -124
+        }
     }
-  }
 }
 ```
 
@@ -230,16 +230,16 @@ mutation {
 
 ```graphql
 mutation {
-  createScan(
-    timestamp: "1111246022353",
-    email: "martin.albert@gmail.com",
-    status: "verified"
-  ){
-    timestamp
-    date
-    email
-    status
-  }
+    createScan(
+        timestamp: "1111246022353"
+        email: "martin.albert@gmail.com"
+        status: "verified"
+    ) {
+        timestamp
+        date
+        email
+        status
+    }
 }
 ```
 
@@ -247,23 +247,24 @@ mutation {
 
 ```json
 {
-  "data": {
-    "createScan": {
-      "timestamp": 1111246022353,
-      "date": "Sat, 19 Mar 2005 15:27:02 GMT",
-      "email": "martin.albert@gmail.com",
-      "status": "verified"
+    "data": {
+        "createScan": {
+            "timestamp": 1111246022353,
+            "date": "Sat, 19 Mar 2005 15:27:02 GMT",
+            "email": "martin.albert@gmail.com",
+            "status": "verified"
+        }
     }
-  }
 }
 ```
 
 #### people delete Request
+
 ##### single delete
 
 ```graphql
 mutation {
-  deletePerson(email: "martin.albert@gmail.com")
+    deletePerson(email: "martin.albert@gmail.com")
 }
 ```
 
@@ -271,7 +272,7 @@ mutation {
 
 ```graphql
 mutation {
-  deleteAllPeople
+    deleteAllPeople
 }
 ```
 
@@ -279,25 +280,27 @@ mutation {
 
 ```json
 {
-  "data": {
-    "deletePerson": true
-  }
+    "data": {
+        "deletePerson": true
+    }
 }
 ```
+
 ```json
 {
-  "data": {
-    "deleteAllPeople": true
-  }
+    "data": {
+        "deleteAllPeople": true
+    }
 }
 ```
 
 #### reading delete Request
+
 ##### single delete
 
 ```graphql
 mutation {
-  deleteReading(timestamp: "1191242229343")
+    deleteReading(timestamp: "1191242229343")
 }
 ```
 
@@ -305,7 +308,7 @@ mutation {
 
 ```graphql
 mutation {
-  deleteAllReadings
+    deleteAllReadings
 }
 ```
 
@@ -313,25 +316,27 @@ mutation {
 
 ```json
 {
-  "data": {
-    "deleteReading": true
-  }
+    "data": {
+        "deleteReading": true
+    }
 }
 ```
+
 ```json
 {
-  "data": {
-    "deleteAllReadings": true
-  }
+    "data": {
+        "deleteAllReadings": true
+    }
 }
 ```
 
 #### scan delete Request
+
 ##### single delete
 
 ```graphql
 mutation {
-  deleteScan(timestamp: "1111246022353")
+    deleteScan(timestamp: "1111246022353")
 }
 ```
 
@@ -339,7 +344,7 @@ mutation {
 
 ```graphql
 mutation {
-  deleteAllScans
+    deleteAllScans
 }
 ```
 
@@ -347,20 +352,22 @@ mutation {
 
 ```json
 {
-  "data": {
-    "deleteReading": true
-  }
+    "data": {
+        "deleteReading": true
+    }
 }
 ```
+
 ```json
 {
-  "data": {
-    "deleteScan": true
-  }
+    "data": {
+        "deleteScan": true
+    }
 }
 ```
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
