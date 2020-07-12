@@ -1,4 +1,4 @@
-const daoLoader = require('./daoLoader');
+const daoLoader = require('./daoLoader')
 
 const personImpl = daoLoader.loadDao('person')
 const readingImpl = daoLoader.loadDao('reading')
@@ -11,7 +11,7 @@ module.exports = {
      * @returns {Promise} - Promise containing person object.
      */
     getPerson: async email => personImpl.getPerson(email),
-    
+
     /**
      * Gets all Person objects.
      * @returns {Promise} - Promise containing all person objects.
@@ -23,16 +23,14 @@ module.exports = {
      * @param {Object} person - Object representing person to be created.
      * @returns {Promise} - Promise containing new person object.
      */
-    createPerson: async person => 
-        personImpl.createPerson(person),
+    createPerson: async person => personImpl.createPerson(person),
 
     /**
      * Updates the Person object with new attributes.
      * @param {Object} person - Object representing person to be updated.
      * @returns {Promise} - Promise indicating the operation has completed.
      */
-    updatePerson: async person =>
-        personImpl.updatePerson(person),
+    updatePerson: async person => personImpl.updatePerson(person),
 
     /**
      * Deletes the Person object represented by given email.
@@ -46,7 +44,6 @@ module.exports = {
      * @returns {Promise} - Promise indicating the operation has completed.
      */
     deleteAllPeople: async () => personImpl.deleteAllPeople(),
-
 
     /**
      * Gets the Reading object for a given timestamp.
