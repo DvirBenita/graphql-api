@@ -18,6 +18,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "jest": "^26.0.1"
+    "jest": "^26.1.0"
   }
 }
